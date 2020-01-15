@@ -4,6 +4,7 @@ import './styles/index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
+//! Here is where the App component is being called
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
