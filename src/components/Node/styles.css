@@ -4,4 +4,12 @@
   outline: 1px solid grey;
   display: inline-block;
 }
+
+.node-start {
+  background: green;
+}
+
+.node-finish {
+  background: red;
+}
 /*# sourceMappingURL=styles.css.map */
