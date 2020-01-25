@@ -9,28 +9,28 @@ let graph = new Graph(numRows,numCols);
 
 graph.printGrid();
 
-let t1 = graph.grid[0][0];
-let t2 = graph.grid[1][2];
+let t1 = graph.grid[1][3];
+let t2 = graph.grid[4][4];
+//let t2 = new GraphNode("<node>", 5,5);
 
 function bfs(graph, startNode, endNode){    
-    console.log(`start Node: row:${startNode.row} col:${startNode.col}`);
+    console.log(`Start Node: row:${startNode.row} col:${startNode.col}`);
     console.log(`End Node: row:${endNode.row} col:${endNode.col}`);
+    console.log();
     let queue = new Queue();
 
     graph.grid[startNode.row][startNode.col].visited = true;
-
     queue.enqueue(startNode);   
-
-   let count = 0;
 
     while(!queue.isEmpty()){
         let currentNode = queue.dequeue();
-        //do something with current node        
+        //TODO: do something visually with current node       
         let {row, col} = currentNode;        
 
         console.log(`currentNode: <node>(${row},${col})`);
 
         if(row == endNode.row && col == endNode.col){
+            //TODO: do something visually with final node
             console.log("Reached destination");
             return;
         }
@@ -40,13 +40,14 @@ function bfs(graph, startNode, endNode){
         process.stdout.write("Queue contents after adding children:");
         queue.printGraphQueue();
     }
+
+    console.log("Did not reach destination");
 }
 
 function addChildrenToQueue(graph, currentNode, queue){
+
     let {row, col} = currentNode;    
 
-    let grid = graph.grid;
-    
     /*
     ?   -----------------
     ?   Corner edge cases
@@ -188,7 +189,34 @@ function addChildrenToQueue(graph, currentNode, queue){
             queue.enqueue(graph.grid[row+1][col]) 
         } 
         return;
-    }    
+    } 
+    /*
+    ?   ------------
+    ?   General Node
+    ?   ------------
+    */
+    else {
+        //top child
+        if(!graph.grid[row-1][col].visited){
+            graph.grid[row-1][col].visited = true;
+            queue.enqueue(graph.grid[row-1][col]) 
+        }
+        //right child
+        if(!graph.grid[row][col+1].visited){
+            graph.grid[row][col+1].visited = true;
+            queue.enqueue(graph.grid[row][col+1]) 
+        } 
+        //bottom child
+        if(!graph.grid[row+1][col].visited){
+            graph.grid[row+1][col].visited = true;
+            queue.enqueue(graph.grid[row+1][col]) 
+        } 
+        //left child
+        if(!graph.grid[row][col-1].visited){
+            graph.grid[row][col-1].visited = true;
+            queue.enqueue(graph.grid[row][col-1])            
+        }
+    }   
 
     return;
 }
