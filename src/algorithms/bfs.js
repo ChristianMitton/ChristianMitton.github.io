@@ -1,17 +1,17 @@
 let Queue = require('../dataStructures/Queue');
-let GraphNode = require('../dataStructures/GraphNode');
-let Graph = require('../dataStructures/Graph');
+// let GraphNode = require('../dataStructures/GraphNode');
+// let Graph = require('../dataStructures/Graph');
 
-let numRows = 5;
-let numCols = 5;
+// let numRows = 5;
+// let numCols = 5;
 
-let graph = new Graph(numRows,numCols);
+// let graph = new Graph(numRows,numCols);
 
-graph.printGrid();
+// graph.printGrid();
 
-let t1 = graph.grid[1][3];
-let t2 = graph.grid[4][4];
-//let t2 = new GraphNode("<node>", 5,5);
+// let t1 = graph.grid[2][2];
+// let t2 = graph.grid[4][4];
+//let t2 = new GraphNode("<node>", 5,100);
 
 function bfs(graph, startNode, endNode){    
     console.log(`Start Node: row:${startNode.row} col:${startNode.col}`);
@@ -24,24 +24,25 @@ function bfs(graph, startNode, endNode){
 
     while(!queue.isEmpty()){
         let currentNode = queue.dequeue();
-        //TODO: do something visually with current node       
+        //TODO: do something visually with current node here     
         let {row, col} = currentNode;        
 
         console.log(`currentNode: <node>(${row},${col})`);
 
-        if(row == endNode.row && col == endNode.col){
-            //TODO: do something visually with final node
+        if(row === endNode.row && col === endNode.col){
+            //TODO: do something visually with final node here
             console.log("Reached destination");
             return;
         }
         
         addChildrenToQueue(graph, currentNode, queue); 
 
-        process.stdout.write("Queue contents after adding children:");
+        //process.stdout.write("Queue contents after adding children:");
         queue.printGraphQueue();
     }
 
     console.log("Did not reach destination");
+    return false;
 }
 
 function addChildrenToQueue(graph, currentNode, queue){
@@ -54,7 +55,7 @@ function addChildrenToQueue(graph, currentNode, queue){
     ?   -----------------
     */
     //! top left corner
-    if(row == 0 && col == 0) {            
+    if(row === 0 && col === 0) {            
         //right child
         if(!graph.grid[row][col+1].visited){
             graph.grid[row][col+1].visited = true;
@@ -68,7 +69,7 @@ function addChildrenToQueue(graph, currentNode, queue){
         return;             
     }
     //! top right corner
-    else if(row == 0 && col == (numCols-1)){
+    else if(row === 0 && col === (graph.numCol-1)){
         //left child
         if(!graph.grid[row][col-1].visited){
             graph.grid[row][col-1].visited = true;
@@ -82,7 +83,7 @@ function addChildrenToQueue(graph, currentNode, queue){
         return;
     }
     //! bottom right corner
-    else if(row == (numRows-1) && col == (numCols-1)){
+    else if(row === (graph.numRow-1) && col === (graph.numCol-1)){
         //left child
         if(!graph.grid[row][col-1].visited){
             graph.grid[row][col-1].visited = true;
@@ -96,7 +97,7 @@ function addChildrenToQueue(graph, currentNode, queue){
         return;
     }
     //! bottom left corner
-    else if(row == (numRows-1) && col == 0){
+    else if(row === (graph.numRow-1) && col === 0){
         //right child
         if(!graph.grid[row][col+1].visited){
             graph.grid[row][col+1].visited = true;
@@ -115,7 +116,7 @@ function addChildrenToQueue(graph, currentNode, queue){
     ?   -----------------
     */
     //! top border
-    else if(row == 0){
+    else if(row === 0){
         //left child  
         if(!graph.grid[row][col-1].visited){
             graph.grid[row][col-1].visited = true;
@@ -134,7 +135,7 @@ function addChildrenToQueue(graph, currentNode, queue){
         return;
     }
     //! right border
-    else if(col == numCols-1){
+    else if(col === graph.numCol-1){
         //left child
         if(!graph.grid[row][col-1].visited){
             graph.grid[row][col-1].visited = true;
@@ -153,7 +154,7 @@ function addChildrenToQueue(graph, currentNode, queue){
         return;
     }
     //! bottom border
-    else if(row == numRows-1){
+    else if(row === graph.numRow-1){
         //left child
         if(!graph.grid[row][col-1].visited){
             graph.grid[row][col-1].visited = true;
@@ -172,7 +173,7 @@ function addChildrenToQueue(graph, currentNode, queue){
         return;
     }
     //! left border
-    else if(col == 0){
+    else if(col === 0){
         //top child
         if(!graph.grid[row-1][col].visited){
             graph.grid[row-1][col].visited = true;
@@ -221,4 +222,7 @@ function addChildrenToQueue(graph, currentNode, queue){
     return;
 }
 
-bfs(graph, t1, t2);
+//bfs(graph, t1, t2);
+
+//export default bfs;
+module.exports = bfs;
