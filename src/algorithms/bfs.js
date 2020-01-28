@@ -14,8 +14,8 @@ let Queue = require('../dataStructures/Queue');
 //let t2 = new GraphNode("<node>", 5,100);
 function clone(obj) {
     if (null == obj || "object" != typeof obj) return obj;
-    var copy = new obj.constructor();
-    for (var attr in obj) {
+    let copy = new obj.constructor();
+    for (let attr in obj) {
         if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
     }
     return copy;
@@ -257,3 +257,4 @@ function addChildrenToQueue(grid, currentNode, queue, numRows, numCols){
 
 //export default bfs;
 module.exports = bfs;
+module.exports.copy2dArrayOfObjects = copy2dArrayOfObjects;
