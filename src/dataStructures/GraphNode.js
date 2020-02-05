@@ -1,7 +1,12 @@
 class GraphNode {
-    constructor(value){
+    constructor(value, row, col){
         this.value = value;
-        this.children = [];
+        this.row = row;
+        this.col = col; 
+        this.visited = false;
+        this.isStart = false;
+        this.isFinish = false;
+        this.isWall = false;
     }
 }
 

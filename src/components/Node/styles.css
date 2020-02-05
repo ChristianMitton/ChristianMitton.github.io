@@ -12,4 +12,12 @@
 .node-finish {
   background: red;
 }
+
+.node-visited {
+  background: blue;
+}
+
+.node-wall {
+  background-color: grey;
+}
 /*# sourceMappingURL=styles.css.map */

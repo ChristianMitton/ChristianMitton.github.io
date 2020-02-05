@@ -16,7 +16,7 @@ class Queue {
     }
 
     isEmpty(){
-        if(this.items.length == 0){
+        if(this.items.length === 0){
             return true;
         }
         return false;
@@ -26,6 +26,16 @@ class Queue {
         for(let index in this.items){
             console.log(this.items[index]);
         }
+    }
+
+    printGraphQueue(){
+        console.log();
+        //process.stdout.write("[ ");
+        for(let index in this.items){
+            console.log(`(${this.items[index].row},${this.items[index].col}), `);
+            //process.stdout.write(`(${this.items[index].row},${this.items[index].col}), `);
+        }
+        console.log("]");
     }
 }
 

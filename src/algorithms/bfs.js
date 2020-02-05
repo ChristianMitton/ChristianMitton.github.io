@@ -44,6 +44,7 @@ function bfs(mainGrid, startNode, endNode, numRows, numCols){
     //console.log(`Here is the main grid after splicing: ${mainGrid}`);
     //let grid = [...mainGrid];
     let grid = copy2dArrayOfObjects(mainGrid);
+    
     //console.log(`Here is the temp grid after splicing: ${grid}`);
 
     let visitedNodes = [];    
@@ -81,9 +82,9 @@ function addChildrenToQueue(grid, currentNode, queue, numRows, numCols){
     let {row, col} = currentNode;    
 
     /*
-    ?   -----------------
-    ?   Corner edge cases
-    ?   -----------------
+    ?   ---------------------------------------------------
+    ?   |               Corner edge cases                 |
+    ?   ---------------------------------------------------
     */
     //! top left corner
     if(row === 0 && col === 0) {            
@@ -92,6 +93,7 @@ function addChildrenToQueue(grid, currentNode, queue, numRows, numCols){
             grid[row][col+1].visited = true;
             queue.enqueue(grid[row][col+1])
         }
+
         //bottom child
         if(!grid[row+1][col].visited){
             grid[row+1][col].visited = true;
@@ -101,77 +103,77 @@ function addChildrenToQueue(grid, currentNode, queue, numRows, numCols){
     }
     //! top right corner
     else if(row === 0 && col === (numCols-1)){
-        //left child
-        if(!grid[row][col-1].visited){
-            grid[row][col-1].visited = true;
-            queue.enqueue(grid[row][col-1]) 
-        }
         //bottom child
         if(!grid[row+1][col].visited){
             grid[row+1][col].visited = true;
             queue.enqueue(grid[row+1][col]) 
-        }
+        }        
+
+        //left child
+        if(!grid[row][col-1].visited){
+            grid[row][col-1].visited = true;
+            queue.enqueue(grid[row][col-1]) 
+        }        
         return;
     }
     //! bottom right corner
     else if(row === (numRows-1) && col === (numCols-1)){
+        //top child
+        if(!grid[row-1][col].visited){
+            grid[row-1][col].visited = true;
+            queue.enqueue(grid[row-1][col]) 
+        }        
+
         //left child
         if(!grid[row][col-1].visited){
             grid[row][col-1].visited = true;
             queue.enqueue(grid[row][col-1]) 
-        }
-        //top child
-        if(!grid[row-1][col].visited){
-            grid[row-1][col].visited = true;
-            queue.enqueue(grid[row-1][col]) 
-        }
+        }        
         return;
     }
     //! bottom left corner
     else if(row === (numRows-1) && col === 0){
-        //right child
-        if(!grid[row][col+1].visited){
-            grid[row][col+1].visited = true;
-            queue.enqueue(grid[row][col+1]) 
-        }
         //top child
         if(!grid[row-1][col].visited){
             grid[row-1][col].visited = true;
             queue.enqueue(grid[row-1][col]) 
-        }
+        }        
+
+        //right child
+        if(!grid[row][col+1].visited){
+            grid[row][col+1].visited = true;
+            queue.enqueue(grid[row][col+1]) 
+        }        
         return;
     }
     /*
-    ?   -----------------
-    ?   Border edge cases
-    ?   -----------------
+    ?   ---------------------------------------------------
+    ?   |               Border edge cases                 |
+    ?   ---------------------------------------------------
     */
     //! top border
     else if(row === 0){
+        //right child
+        if(!grid[row][col+1].visited){
+            grid[row][col+1].visited = true;
+            queue.enqueue(grid[row][col+1]) 
+        }        
+
+        //bottom child
+        if(!grid[row+1][col].visited){
+            grid[row+1][col].visited = true;
+            queue.enqueue(grid[row+1][col]) 
+        }
+        
         //left child  
         if(!grid[row][col-1].visited){
             grid[row][col-1].visited = true;
             queue.enqueue(grid[row][col-1])            
-        }
-        //right child
-        if(!grid[row][col+1].visited){
-            grid[row][col+1].visited = true;
-            queue.enqueue(grid[row][col+1]) 
-        }
-        //bottom child
-        if(!grid[row+1][col].visited){
-            grid[row+1][col].visited = true;
-            queue.enqueue(grid[row+1][col]) 
-        }
+        }        
         return;
     }
     //! right border
     else if(col === numCols-1){
-        //left child
-        if(!grid[row][col-1].visited){
-            grid[row][col-1].visited = true;
-            queue.enqueue(grid[row][col-1])            
-        }
         //top child
         if(!grid[row-1][col].visited){
             grid[row-1][col].visited = true;
@@ -182,25 +184,34 @@ function addChildrenToQueue(grid, currentNode, queue, numRows, numCols){
             grid[row+1][col].visited = true;
             queue.enqueue(grid[row+1][col]) 
         }
-        return;
-    }
-    //! bottom border
-    else if(row === numRows-1){
+        
         //left child
         if(!grid[row][col-1].visited){
             grid[row][col-1].visited = true;
             queue.enqueue(grid[row][col-1])            
-        }
-        //top child
-        if(!grid[row-1][col].visited){
+        }        
+        
+        return;
+    }
+    //! bottom border
+    else if(row === numRows-1){
+         //top child
+         if(!grid[row-1][col].visited){
             grid[row-1][col].visited = true;
             queue.enqueue(grid[row-1][col]) 
         }
+        
         //right child
         if(!grid[row][col+1].visited){
             grid[row][col+1].visited = true;
             queue.enqueue(grid[row][col+1]) 
         }
+        //left child
+        if(!grid[row][col-1].visited){
+            grid[row][col-1].visited = true;
+            queue.enqueue(grid[row][col-1])            
+        }     
+        
         return;
     }
     //! left border
@@ -210,11 +221,13 @@ function addChildrenToQueue(grid, currentNode, queue, numRows, numCols){
             grid[row-1][col].visited = true;
             queue.enqueue(grid[row-1][col]) 
         }
+        
         //right child
         if(!grid[row][col+1].visited){
             grid[row][col+1].visited = true;
             queue.enqueue(grid[row][col+1]) 
         } 
+        
         //bottom child
         if(!grid[row+1][col].visited){
             grid[row+1][col].visited = true;
@@ -223,28 +236,31 @@ function addChildrenToQueue(grid, currentNode, queue, numRows, numCols){
         return;
     } 
     /*
-    ?   ------------
-    ?   General Node
-    ?   ------------
+    ?   ---------------------------------------------------
+    ?   |          General Node with 8 children           | 
+    ?   ---------------------------------------------------
     */
     else {
         //top child
-        if(!grid[row-1][col].visited){
+        if(!grid[row-1][col].visited && !grid[row-1][col].isWall){
             grid[row-1][col].visited = true;
             queue.enqueue(grid[row-1][col]) 
-        }
+        }                
+
         //right child
-        if(!grid[row][col+1].visited){
+        if(!grid[row][col+1].visited && !grid[row][col+1].isWall){
             grid[row][col+1].visited = true;
             queue.enqueue(grid[row][col+1]) 
-        } 
+        }         
+
         //bottom child
-        if(!grid[row+1][col].visited){
+        if(!grid[row+1][col].visited && !grid[row+1][col].isWall){
             grid[row+1][col].visited = true;
             queue.enqueue(grid[row+1][col]) 
-        } 
+        }         
+
         //left child
-        if(!grid[row][col-1].visited){
+        if(!grid[row][col-1].visited && !grid[row][col-1].isWall){
             grid[row][col-1].visited = true;
             queue.enqueue(grid[row][col-1])            
         }
@@ -258,3 +274,4 @@ function addChildrenToQueue(grid, currentNode, queue, numRows, numCols){
 //export default bfs;
 module.exports = bfs;
 module.exports.copy2dArrayOfObjects = copy2dArrayOfObjects;
+module.exports.clone = clone;
