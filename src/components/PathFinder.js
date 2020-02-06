@@ -7,11 +7,13 @@ import '../styles/style.css';
 let GraphNode = require('../dataStructures/GraphNode');
 let Graph = require('../dataStructures/Graph');
 let bfs = require('../algorithms/bfs');
-let { copy2dArrayOfObjects } = require('../algorithms/bfs');
+let dfs = require('../algorithms/dfs');
+let copyObjects = require('../algorithms/copyObjects')
+//let { copy2dArrayOfObjects } = require('../algorithms/bfs');
 
 const START_NODE_ROW_TEST = 10;
 const START_NODE_COL_TEST = 15;
-const FINISH_NODE_ROW_TEST = 12;
+const FINISH_NODE_ROW_TEST = 10;
 const FINISH_NODE_COL_TEST = 20;
 
 const numRows = 20;
@@ -93,7 +95,7 @@ class PathFinder extends Component {
                     return;
                 }                
                 
-                const updatedGrid = copy2dArrayOfObjects(this.state.grid);
+                const updatedGrid = copyObjects.copy2dArrayOfObjects(this.state.grid);
                 const currentNode = visitedNodes[index]; 
                 
                 updatedGrid[currentNode.row][currentNode.col].visited = true; 
@@ -102,6 +104,41 @@ class PathFinder extends Component {
                     grid: updatedGrid
                 })
             }, 50 * index);
+        }
+    }
+
+    visualizeDFS(){
+        const {grid} = this.state;
+
+        //let graph = new Graph(numRows,numCols);
+
+        const startNode = grid[START_NODE_ROW_TEST][START_NODE_COL_TEST];
+        const finishNode = grid[FINISH_NODE_ROW_TEST][FINISH_NODE_COL_TEST];
+
+        console.log("-1")
+        let visitedNodes = dfs(grid, startNode, finishNode, numRows, numCols);
+        console.log("-2")
+        //for(let index in visitedNodes) console.log(visitedNodes[index])
+
+        this.animateDFS(visitedNodes);
+    }
+
+    animateDFS(visitedNodes){
+        for(let index in visitedNodes){
+            setTimeout(() => {
+                if(!start){
+                    return
+                }
+
+                const updatedGrid = copyObjects.copy2dArrayOfObjects(this.state.grid);
+                const currentNode = visitedNodes[index]; 
+                
+                updatedGrid[currentNode.row][currentNode.col].visited = true; 
+                
+                this.setState({
+                    grid: updatedGrid
+                })
+            }, 50 * index)
         }
     }
 
@@ -114,6 +151,9 @@ class PathFinder extends Component {
             <>
             <button onClick={() => this.visualizeBFS()}>
                 Visualize Breadth First Search Algorithm
+            </button>
+            <button onClick={() => this.visualizeDFS()}>
+                Visualize Depth First Search Algorithm
             </button>
             <div className="grid">
             {/* Map can have three parameters: value, index, array */}
@@ -165,9 +205,9 @@ class PathFinder extends Component {
     }
 
     getNewGridWithWallToggled(grid, row, col){
-            const newGrid = bfs.copy2dArrayOfObjects(grid)
+            const newGrid = copyObjects.copy2dArrayOfObjects(grid)
             const node = newGrid[row][col]
-            const newNode = bfs.clone(node)
+            const newNode = copyObjects.clone(node)
             newNode.isWall = true
             newGrid[row][col] = newNode
             return newGrid
