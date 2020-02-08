@@ -8,13 +8,14 @@ let GraphNode = require('../dataStructures/GraphNode');
 let Graph = require('../dataStructures/Graph');
 let bfs = require('../algorithms/bfs');
 let dfs = require('../algorithms/dfs');
+let aStar = require('../algorithms/aStar')
 let copyObjects = require('../algorithms/copyObjects')
 //let { copy2dArrayOfObjects } = require('../algorithms/bfs');
 
 const START_NODE_ROW_TEST = 10;
-const START_NODE_COL_TEST = 15;
-const FINISH_NODE_ROW_TEST = 10;
-const FINISH_NODE_COL_TEST = 20;
+const START_NODE_COL_TEST = 16;
+const FINISH_NODE_ROW_TEST = 4//7//3;
+const FINISH_NODE_COL_TEST = 13//12//7;
 
 const numRows = 20;
 const numCols = 50;
@@ -75,55 +76,38 @@ class PathFinder extends Component {
 
         const {grid} = this.state;
 
-        //let graph = new Graph(numRows,numCols);
-
         const startNode = grid[START_NODE_ROW_TEST][START_NODE_COL_TEST];
         const finishNode = grid[FINISH_NODE_ROW_TEST][FINISH_NODE_COL_TEST];
 
         const visitedNodes = bfs(grid, startNode, finishNode, numRows, numCols);
 
-        //for(let index in visitedNodes) console.log(visitedNodes[index])
+        this.animate(visitedNodes);
 
-        this.animateBfs(visitedNodes);
-
-    }
-
-    animateBfs(visitedNodes){
-        for(let index in visitedNodes){                                
-            setTimeout(() => {     
-                if(!start){
-                    return;
-                }                
-                
-                const updatedGrid = copyObjects.copy2dArrayOfObjects(this.state.grid);
-                const currentNode = visitedNodes[index]; 
-                
-                updatedGrid[currentNode.row][currentNode.col].visited = true; 
-                
-                this.setState({
-                    grid: updatedGrid
-                })
-            }, 50 * index);
-        }
     }
 
     visualizeDFS(){
         const {grid} = this.state;
 
-        //let graph = new Graph(numRows,numCols);
+        const startNode = grid[START_NODE_ROW_TEST][START_NODE_COL_TEST];
+        const finishNode = grid[FINISH_NODE_ROW_TEST][FINISH_NODE_COL_TEST];
+
+        let visitedNodes = dfs(grid, startNode, finishNode, numRows, numCols);        
+
+        this.animate(visitedNodes);
+    }
+
+    visualizeAStar(){
+        const {grid} = this.state;
 
         const startNode = grid[START_NODE_ROW_TEST][START_NODE_COL_TEST];
         const finishNode = grid[FINISH_NODE_ROW_TEST][FINISH_NODE_COL_TEST];
 
-        console.log("-1")
-        let visitedNodes = dfs(grid, startNode, finishNode, numRows, numCols);
-        console.log("-2")
-        //for(let index in visitedNodes) console.log(visitedNodes[index])
+        let visitedNodes = aStar(grid, startNode, finishNode, numRows, numCols);
 
-        this.animateDFS(visitedNodes);
+        this.animate(visitedNodes);
     }
 
-    animateDFS(visitedNodes){
+    animate(visitedNodes){
         for(let index in visitedNodes){
             setTimeout(() => {
                 if(!start){
@@ -154,6 +138,9 @@ class PathFinder extends Component {
             </button>
             <button onClick={() => this.visualizeDFS()}>
                 Visualize Depth First Search Algorithm
+            </button>
+            <button onClick={() => this.visualizeAStar()}>
+                Visualize A*
             </button>
             <div className="grid">
             {/* Map can have three parameters: value, index, array */}
@@ -215,3 +202,12 @@ class PathFinder extends Component {
 }
 
 export default PathFinder;
+
+/**
+ * NOTES:
+ * 
+ * TODO: When someone clicks a node, have a pop up that gives choice of setting start and end node
+ * 
+ * 
+ * 
+ */
