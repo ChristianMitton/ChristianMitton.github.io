@@ -5,7 +5,7 @@ import '../styles/style.css';
 
 // let Queue = require('../dataStructures/Queue');
 let GraphNode = require('../dataStructures/GraphNode');
-let Graph = require('../dataStructures/Graph');
+// let Graph = require('../dataStructures/Graph');
 let bfs = require('../algorithms/bfs');
 let dfs = require('../algorithms/dfs');
 let aStar = require('../algorithms/aStar')
@@ -13,9 +13,9 @@ let copyObjects = require('../algorithms/copyObjects')
 //let { copy2dArrayOfObjects } = require('../algorithms/bfs');
 
 const START_NODE_ROW_TEST = 10;
-const START_NODE_COL_TEST = 16;
-const FINISH_NODE_ROW_TEST = 4//7//3;
-const FINISH_NODE_COL_TEST = 13//12//7;
+const START_NODE_COL_TEST = 21;
+const FINISH_NODE_ROW_TEST = 10//5//14//14//8//7;
+const FINISH_NODE_COL_TEST = 37//37//32//18+5+3;
 
 const numRows = 20;
 const numCols = 50;
@@ -49,11 +49,15 @@ class PathFinder extends Component {
         })
         console.log(`pressed mouse button on node (${row},${col})`)
     }
-
+//////////////////////////////////////////
     //when mouse is hovering
     handleMouseEnter(row, col){
         //if the mouse isnt pressed, do nothing
-        if(!this.state.mouseIsPressed) return;
+        if(!this.state.mouseIsPressed){
+            console.log(`hovering over node ${row},${col}`)
+            
+            return
+        };
         console.log(`hovering over node (${row},${col})`)
         let newGrid = this.getNewGridWithWallToggled(this.state.grid, row, col)
         this.setState({

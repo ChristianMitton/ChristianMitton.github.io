@@ -11,6 +11,8 @@ class GraphNode {
         this.hCost = 0;
         this.fCost = 0;
         this.parent = null;
+        this.hover = false;
+        this.isAStarStart = false;
     }
 }
 

@@ -12,7 +12,7 @@ class Node extends Component {
 
     render() {
         const {
-            value, 
+            // value, 
             row, 
             col, 
             isStart, 

@@ -1,9 +1,12 @@
 .node {
-    width: 25px;
-    height: 25px;
+    // width: 25px;
+    // height: 25px;
+    width: 2vw;
+    height: 3vh;
     outline: 1px solid rgb(175, 216, 248);
-    display: inline-block;
+    display: inline-block;    
     // border-radius: 100%;
+    
 }
 
 .node-start {
@@ -67,3 +70,9 @@
         background-color: rgba(0, 198, 218, 0.75)
     }
 } */
+
+// @media only screen and (max-width: 1300px) {
+//     body {
+//       background-color: lightblue;
+//     }
+//   }

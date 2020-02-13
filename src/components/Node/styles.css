@@ -1,6 +1,6 @@
 .node {
-  width: 25px;
-  height: 25px;
+  width: 2vw;
+  height: 3vh;
   outline: 1px solid #afd8f8;
   display: inline-block;
 }
