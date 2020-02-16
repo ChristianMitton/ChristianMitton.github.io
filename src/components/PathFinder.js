@@ -3,26 +3,22 @@ import React, { Component } from 'react';
 import Node from './Node/Node';
 import '../styles/style.css'; 
 
-// let Queue = require('../dataStructures/Queue');
 let GraphNode = require('../dataStructures/GraphNode');
-// let Graph = require('../dataStructures/Graph');
 let bfs = require('../algorithms/bfs');
 let dfs = require('../algorithms/dfs');
-let aStar = require('../algorithms/aStar')
-let copyObjects = require('../algorithms/copyObjects')
-//let { copy2dArrayOfObjects } = require('../algorithms/bfs');
+let aStar = require('../algorithms/aStar');
+let generateMaze = require('../algorithms/mazeGeneration');
+let copyObjects = require('../algorithms/copyObjects');
 
-let START_NODE_ROW_TEST = 10;
-let START_NODE_COL_TEST = 18;
-let FINISH_NODE_ROW_TEST = 10//5//14//14//8//7;
-let FINISH_NODE_COL_TEST = 49-18//37//32//18+5+3;
+let DEFAULT_START_NODE_ROW = 10;
+let DEFAULT_START_NODE_COL = 18;
+let DEFAULT_FINISH_NODE_ROW = 10;
+let DEFAULT_FINISH_NODE_COL = 31;
 
 const numRows = 20;
 const numCols = 50;
 
 let start = true;
-//let clickedStart = false;
-//let clickedEnd = false;
 
 class PathFinder extends Component {
     constructor(props) {
@@ -45,13 +41,21 @@ class PathFinder extends Component {
         });
     }
 
+    clearWalls(){
+        const newGrid = this.createDefaultGrid();        
+
+        this.setState({
+            grid: newGrid
+        })
+    }
+
     //when mouse button is pressed
     handleMouseDown(row, col){
         //if the start node is clicked
-        if(row === START_NODE_ROW_TEST && col === START_NODE_COL_TEST){
+        if(row === DEFAULT_START_NODE_ROW && col === DEFAULT_START_NODE_COL){
             console.log("clicked Start node")
 
-            const newGrid = this.getNewGridWithUpdatedStartNode(this.state.grid, row, col, START_NODE_ROW_TEST, START_NODE_COL_TEST)        
+            const newGrid = this.getNewGridWithUpdatedStartNode(this.state.grid, row, col, DEFAULT_START_NODE_ROW, DEFAULT_START_NODE_COL)        
             this.setState({
                 grid: newGrid,
                 clickedStart: true
@@ -59,10 +63,10 @@ class PathFinder extends Component {
             return
         }
 
-        if(row === FINISH_NODE_ROW_TEST && col === FINISH_NODE_COL_TEST){
+        if(row === DEFAULT_FINISH_NODE_ROW && col === DEFAULT_FINISH_NODE_COL){
             console.log("clicked End node")
 
-            const newGrid = this.getNewGridWithUpdatedFinishNode(this.state.grid, row, col, FINISH_NODE_ROW_TEST, FINISH_NODE_COL_TEST)        
+            const newGrid = this.getNewGridWithUpdatedFinishNode(this.state.grid, row, col, DEFAULT_FINISH_NODE_ROW, DEFAULT_FINISH_NODE_COL)        
             this.setState({
                 grid: newGrid,
                 clickedFinish: true
@@ -82,16 +86,16 @@ class PathFinder extends Component {
     handleMouseEnter(row, col){        
         
         //if the start button is clicked
-        // if(row === START_NODE_ROW_TEST && col === START_NODE_COL_TEST){
+        // if(row === DEFAULT_START_NODE_ROW && col === DEFAULT_START_NODE_COL){
         if(this.state.clickedStart){
-            const newGrid = this.getNewGridWithUpdatedStartNode(this.state.grid, row, col, START_NODE_ROW_TEST, START_NODE_COL_TEST)
+            const newGrid = this.getNewGridWithUpdatedStartNode(this.state.grid, row, col, DEFAULT_START_NODE_ROW, DEFAULT_START_NODE_COL)
             this.setState({
                 grid: newGrid,                
             })
             return
         }
         if(this.state.clickedFinish){
-            const newGrid = this.getNewGridWithUpdatedFinishNode(this.state.grid, row, col, FINISH_NODE_ROW_TEST, FINISH_NODE_COL_TEST)
+            const newGrid = this.getNewGridWithUpdatedFinishNode(this.state.grid, row, col, DEFAULT_FINISH_NODE_ROW, DEFAULT_FINISH_NODE_COL)
             this.setState({
                 grid: newGrid,                
             })
@@ -103,6 +107,7 @@ class PathFinder extends Component {
             
             return
         };
+        
         console.log(`hovering over node (${row},${col})`)
         let newGrid = this.getNewGridWithWallToggled(this.state.grid, row, col)
         this.setState({
@@ -127,8 +132,8 @@ class PathFinder extends Component {
 
         const {grid} = this.state;
 
-        const startNode = grid[START_NODE_ROW_TEST][START_NODE_COL_TEST];
-        const finishNode = grid[FINISH_NODE_ROW_TEST][FINISH_NODE_COL_TEST];
+        const startNode = grid[DEFAULT_START_NODE_ROW][DEFAULT_START_NODE_COL];
+        const finishNode = grid[DEFAULT_FINISH_NODE_ROW][DEFAULT_FINISH_NODE_COL];
 
         const visitedNodes = bfs(grid, startNode, finishNode, numRows, numCols);
 
@@ -139,8 +144,8 @@ class PathFinder extends Component {
     visualizeDFS(){
         const {grid} = this.state;
 
-        const startNode = grid[START_NODE_ROW_TEST][START_NODE_COL_TEST];
-        const finishNode = grid[FINISH_NODE_ROW_TEST][FINISH_NODE_COL_TEST];
+        const startNode = grid[DEFAULT_START_NODE_ROW][DEFAULT_START_NODE_COL];
+        const finishNode = grid[DEFAULT_FINISH_NODE_ROW][DEFAULT_FINISH_NODE_COL];
 
         let visitedNodes = dfs(grid, startNode, finishNode, numRows, numCols);        
 
@@ -150,12 +155,20 @@ class PathFinder extends Component {
     visualizeAStar(){
         const {grid} = this.state;
 
-        const startNode = grid[START_NODE_ROW_TEST][START_NODE_COL_TEST];
-        const finishNode = grid[FINISH_NODE_ROW_TEST][FINISH_NODE_COL_TEST];
+        const startNode = grid[DEFAULT_START_NODE_ROW][DEFAULT_START_NODE_COL];
+        const finishNode = grid[DEFAULT_FINISH_NODE_ROW][DEFAULT_FINISH_NODE_COL];
 
         let visitedNodes = aStar(grid, startNode, finishNode, numRows, numCols);
 
         this.animate(visitedNodes);
+    }
+
+    createMaze(){
+        const {grid} = this.state;
+
+        let visitedNodes = generateMaze(grid, numRows, numCols)
+
+        this.animateMaze(visitedNodes)
     }
 
     animate(visitedNodes){
@@ -177,6 +190,25 @@ class PathFinder extends Component {
         }
     }
 
+    animateMaze(visitedNodes){
+        for(let index in visitedNodes){
+            setTimeout(() => {
+                if(!start){
+                    return
+                }
+
+                const updatedGrid = copyObjects.copy2dArrayOfObjects(this.state.grid);
+                const currentNode = visitedNodes[index]; 
+                
+                updatedGrid[currentNode.row][currentNode.col].isWall = true; 
+                
+                this.setState({
+                    grid: updatedGrid
+                })
+            }, 35 * index)
+        }
+    }
+
     render() {
         const {grid} = this.state;  
         
@@ -184,6 +216,12 @@ class PathFinder extends Component {
 
         return (
             <>
+            <button onClick={() => this.createMaze()}>
+                Create Maze
+            </button>
+            <button onClick={() => this.clearWalls()}>
+                Clear Walls
+            </button>
             <button onClick={() => this.visualizeBFS()}>
                 Visualize Breadth First Search Algorithm
             </button>
@@ -192,6 +230,9 @@ class PathFinder extends Component {
             </button>
             <button onClick={() => this.visualizeAStar()}>
                 Visualize A*
+            </button>            
+            <button>
+                Clear Algorithm
             </button>
             <div className="grid">
             {/* Map can have three parameters: value, index, array */}
@@ -231,8 +272,8 @@ class PathFinder extends Component {
             const currentRow = [];
             for(let col = 0; col < numCols; col++) {                
                 const currentNode = new GraphNode("", row, col);                
-                currentNode.isStart = row === START_NODE_ROW_TEST && col === START_NODE_COL_TEST;
-                currentNode.isFinish = row === FINISH_NODE_ROW_TEST && col === FINISH_NODE_COL_TEST;
+                currentNode.isStart = row === DEFAULT_START_NODE_ROW && col === DEFAULT_START_NODE_COL;
+                currentNode.isFinish = row === DEFAULT_FINISH_NODE_ROW && col === DEFAULT_FINISH_NODE_COL;
                 
                 currentRow.push(currentNode);
             }
@@ -260,8 +301,8 @@ class PathFinder extends Component {
         const oldStartNodeCopy = copyObjects.clone(oldStartNode)
         const newStartNodeCopy = copyObjects.clone(newStartNode)
 
-        START_NODE_ROW_TEST = row
-        START_NODE_COL_TEST = col  
+        DEFAULT_START_NODE_ROW = row
+        DEFAULT_START_NODE_COL = col  
 
         oldStartNodeCopy.isStart = false
         newStartNodeCopy.isStart = true
@@ -281,8 +322,8 @@ class PathFinder extends Component {
         const oldStartNodeCopy = copyObjects.clone(oldFinishNode)
         const newStartNodeCopy = copyObjects.clone(newFinishNode)
 
-        FINISH_NODE_ROW_TEST = row
-        FINISH_NODE_COL_TEST = col  
+        DEFAULT_FINISH_NODE_ROW = row
+        DEFAULT_FINISH_NODE_COL = col  
 
         oldStartNodeCopy.isFinish = false
         newStartNodeCopy.isFinish = true

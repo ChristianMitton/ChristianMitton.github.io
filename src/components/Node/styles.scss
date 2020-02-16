@@ -1,3 +1,7 @@
+$wallColor: rgb(128,128,128);
+$startColor: rgba(63, 195, 128, 1);
+$finishColor: rgba(255, 0, 0, 0.6);
+
 .node {
     // width: 25px;
     // height: 25px;
@@ -10,34 +14,33 @@
 }
 
 .node-start {
-    background: green;
+    background: $startColor;
+    animation-name: startNodeAnimation;
+    animation-duration: .5s;    
 }
 
 .node-finish {
-    background: red;
+    background: $finishColor;
+    animation-name: finishNodeAnimation;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
 }
 
 .node-visited {
-    background: blue;
-    animation-name: myanimation;
+    background: rgba(34, 167, 240, 1);
+    animation-name: visitedAnimation;
     animation-duration: 1.5s;
-    /* animation-name: visitedAnimation;
-    animation-duration: 1.5;
-    animation-timing-function: ease-out;
-    animation-delay: 0;
-    animation-direction: alternate;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    animation-play-state: running; */
 }
 
 .node-wall {
-    background-color: grey;
+    background-color: $wallColor;
+    animation-name: wallAnimation;
+    animation-duration: 0.1s;
 }
 
-@keyframes myanimation {
+@keyframes visitedAnimation {
     0% {
-        background-color: red;
+        background-color: rgba(63, 195, 128, 1);
         transform: scale(0.2);
         // background-color: rgba(0, 0, 66, 0.75);
         border-radius: 100%;
@@ -46,6 +49,38 @@
     100% {
         // background-color: rgba(0, 0, 255, 0.692);
         // background-color: red;        
+    }
+}
+
+@keyframes wallAnimation {
+    0% {
+        background-color: rgba(63, 195, 128, 1);
+        transform: scale(0.2);
+        // background-color: rgba(0, 0, 66, 0.75);
+        border-radius: 100%;
+    }
+
+    100% {
+        // background-color: rgba(0, 0, 255, 0.692);
+        // background-color: red;        
+    }
+}
+
+@keyframes startNodeAnimation {
+    0% {
+        background-color: $startColor;
+        transform: scale(0.8);
+        // background-color: rgba(0, 0, 66, 0.75);
+        border-radius: 0%;
+    }
+}
+
+@keyframes finishNodeAnimation {
+    0% {
+        background-color: $finishColor;
+        transform: scale(0.8);
+        // background-color: rgba(0, 0, 66, 0.75);
+        border-radius: 0%;
     }
 }
 
