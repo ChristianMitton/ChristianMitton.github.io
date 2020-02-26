@@ -22,10 +22,10 @@ function aStar(mainGrid, startNode, endNode, numRows, numCols){
         // console.log(1)
         
         if(currentNode.isAStarStart === true){
-            console.log(`At start node ${currentNode.row}, ${currentNode.col}`)    
+            // console.log(`At start node ${currentNode.row}, ${currentNode.col}`)    
         } else {
             //console.log(`currentNode: ${currentNode.row},${currentNode.col} [G: ${currentNode.gCost}, H:${currentNode.hCost}, F:${currentNode.fCost}] parent: (${currentNode.parent.row}, ${currentNode.parent.col})`)
-            console.log(`Choosing node With lowest f Cost: ${currentNode.row},${currentNode.col} [G: ${currentNode.gCost}, H:${currentNode.hCost}, F:${currentNode.fCost}] parent: (${currentNode.parent.row}, ${currentNode.parent.col})`)
+            // console.log(`Choosing node With lowest f Cost: ${currentNode.row},${currentNode.col} [G: ${currentNode.gCost}, H:${currentNode.hCost}, F:${currentNode.fCost}] parent: (${currentNode.parent.row}, ${currentNode.parent.col})`)
         }
 
         // finalArray.push(currentNode)
@@ -38,7 +38,7 @@ function aStar(mainGrid, startNode, endNode, numRows, numCols){
         removeFromArray(currentNode, open)        
 
         if(currentNode.row === endNode.row && currentNode.col === endNode.col){            
-            console.log("Reached Destination")
+            // console.log("Reached Destination")
             return finalArray
         }
         
@@ -57,7 +57,7 @@ function aStar(mainGrid, startNode, endNode, numRows, numCols){
 
             // if at destination
             if(currentNeighbor.row === endNode.row && currentNeighbor.col === endNode.col){            
-                console.log("Reached Destination")
+                // console.log("Reached Destination")
                 return finalArray
             }
 
@@ -73,7 +73,7 @@ function aStar(mainGrid, startNode, endNode, numRows, numCols){
                 
                 currentNeighbor.parent = currentNode
 
-                console.log(`---- neighbor ${currentNeighbor.row},${currentNeighbor.col} [g: ${currentNeighbor.gCost} h: ${currentNeighbor.hCost} f: ${currentNeighbor.fCost}]`)
+                // console.log(`---- neighbor ${currentNeighbor.row},${currentNeighbor.col} [g: ${currentNeighbor.gCost} h: ${currentNeighbor.hCost} f: ${currentNeighbor.fCost}]`)
 
                 // currentNode.parent = currentNeighbor
 
@@ -89,7 +89,7 @@ function aStar(mainGrid, startNode, endNode, numRows, numCols){
         
     }
 
-    console.log('did not reach destination')
+    // console.log('did not reach destination')
 }
 
 function getNeighbors(currentNode, grid){
@@ -98,28 +98,31 @@ function getNeighbors(currentNode, grid){
     //the column of the start node detemines the currentNodes gCost
     // Math.abs(col*sqrt(2) - startNode.col*sqrt(2))
     
+    try{
+        let topLeftNeighbor = grid[row-1][col-1]
+        let topNeighbor = grid[row-1][col]
+        let topRightNeighbor = grid[row-1][col+1]
+        let rightNeighbor = grid[row][col+1]
+        let bottomRighNeighbor = grid[row+1][col+1]
+        let bottomNeighbor = grid[row+1][col]
+        let bottomLeftNeighbor = grid[row+1][col-1]
+        let leftNeighbor = grid[row][col-1]  
 
-    let topLeftNeighbor = grid[row-1][col-1]
-    let topNeighbor = grid[row-1][col]
-    let topRightNeighbor = grid[row-1][col+1]
-    let rightNeighbor = grid[row][col+1]
-    let bottomRighNeighbor = grid[row+1][col+1]
-    let bottomNeighbor = grid[row+1][col]
-    let bottomLeftNeighbor = grid[row+1][col-1]
-    let leftNeighbor = grid[row][col-1]  
+        let arrayOfNeighbors = []
 
-    let arrayOfNeighbors = []
+        arrayOfNeighbors.push(topLeftNeighbor)
+        arrayOfNeighbors.push(topNeighbor)
+        arrayOfNeighbors.push(topRightNeighbor)
+        arrayOfNeighbors.push(rightNeighbor)
+        arrayOfNeighbors.push(bottomRighNeighbor)
+        arrayOfNeighbors.push(bottomNeighbor)
+        arrayOfNeighbors.push(bottomLeftNeighbor)
+        arrayOfNeighbors.push(leftNeighbor)
 
-    arrayOfNeighbors.push(topLeftNeighbor)
-    arrayOfNeighbors.push(topNeighbor)
-    arrayOfNeighbors.push(topRightNeighbor)
-    arrayOfNeighbors.push(rightNeighbor)
-    arrayOfNeighbors.push(bottomRighNeighbor)
-    arrayOfNeighbors.push(bottomNeighbor)
-    arrayOfNeighbors.push(bottomLeftNeighbor)
-    arrayOfNeighbors.push(leftNeighbor)
-
-    return arrayOfNeighbors
+        return arrayOfNeighbors
+    } catch(e){
+        
+    }
 
 }
 

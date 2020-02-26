@@ -4,9 +4,13 @@ import Node from './Node/Node';
 import '../styles/style.css'; 
 
 let GraphNode = require('../dataStructures/GraphNode');
+
 let bfs = require('../algorithms/bfs');
 let dfs = require('../algorithms/dfs');
 let aStar = require('../algorithms/aStar');
+let dijkstra = require('../algorithms/dijkstra');
+
+
 let generateMaze = require('../algorithms/mazeGeneration');
 let copyObjects = require('../algorithms/copyObjects');
 
@@ -103,7 +107,7 @@ class PathFinder extends Component {
         }
         //if the mouse isnt pressed, do nothing
         if(!this.state.mouseIsPressed){
-            console.log(`hovering over node ${row},${col}`)
+            // console.log(`hovering over node ${row},${col}`)
             
             return
         };
@@ -119,7 +123,7 @@ class PathFinder extends Component {
     //when you release mouse button
     handleMouseUp(row, col){
         //once you release the mouse button, set mouseIsPressed to false
-        console.log(`release mouse button on node (${row},${col})`)
+        //console.log(`release mouse button on node (${row},${col})`)
         this.setState({
             mouseIsPressed: false,
             clickedStart: false,
@@ -161,6 +165,18 @@ class PathFinder extends Component {
         let visitedNodes = aStar(grid, startNode, finishNode, numRows, numCols);
 
         this.animate(visitedNodes);
+    }
+
+    visualizeDijkstra(){
+        const {grid} = this.state;
+
+        const startNode = grid[DEFAULT_START_NODE_ROW][DEFAULT_START_NODE_COL];
+        const finishNode = grid[DEFAULT_FINISH_NODE_ROW][DEFAULT_FINISH_NODE_COL];
+
+        let visitedNodes = dijkstra(grid, startNode, finishNode, numRows, numCols);
+
+        this.animate(visitedNodes);
+
     }
 
     createMaze(){
@@ -231,8 +247,8 @@ class PathFinder extends Component {
             <button onClick={() => this.visualizeAStar()}>
                 Visualize A*
             </button>            
-            <button>
-                Clear Algorithm
+            <button onClick={() => this.visualizeDijkstra()}>
+                Visualize Dijkstra's
             </button>
             <div className="grid">
             {/* Map can have three parameters: value, index, array */}

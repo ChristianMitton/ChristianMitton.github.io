@@ -14,10 +14,12 @@ class GraphNode {
         this.hover = false;
         this.isAStarStart = false;        
         this.next = null;    
+        this.prev = null;
         this.topWall = false;
         this.rightWall = false;
         this.bottomWall = false;
-        this.leftWall = false;    
+        this.leftWall = false;
+        this.weight = Infinity;            
     }
 }
 
