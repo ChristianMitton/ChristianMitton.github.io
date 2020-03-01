@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import Collapsible from 'react-collapsible';
 
 import Node from './Node/Node';
-import '../styles/style.css'; 
+import '../styles/style.css';
 
 let GraphNode = require('../dataStructures/GraphNode');
 
@@ -45,12 +46,17 @@ class PathFinder extends Component {
         });
     }
 
-    clearWalls(){
+    clear(){
         const newGrid = this.createDefaultGrid();        
 
         this.setState({
             grid: newGrid
         })
+    }
+
+    stopAlgorithm(){
+        // this.setState({ state: this.state })  
+        window.location.reload(false)                      
     }
 
     //when mouse button is pressed
@@ -204,7 +210,7 @@ class PathFinder extends Component {
                 })
             }, 50 * index)
         }
-    }
+    }    
 
     animateMaze(visitedNodes){
         for(let index in visitedNodes){
@@ -232,23 +238,144 @@ class PathFinder extends Component {
 
         return (
             <>
-            <button onClick={() => this.createMaze()}>
+            {/* <button onClick={() => this.createMaze()}>
                 Create Maze
-            </button>
-            <button onClick={() => this.clearWalls()}>
-                Clear Walls
-            </button>
-            <button onClick={() => this.visualizeBFS()}>
+            </button> */}    
+            <Collapsible trigger="Help" className="help">
+                <p className="start_text">• Green = start</p>
+                <p className="end_text">• Red = finish</p>
+                <p className="regular_text">• Clear = remove walls / visited nodes ( If algorithm is in mid execution, algorithm will continue running after clear )</p>
+                <p className="regular_text">• Click and drag on grid to create walls</p>
+                <p className="regular_text">• After running an algorithm, if you click another algorithm and it does not animate, click the 'restart' button</p>                          
+            </Collapsible>
+
+            <Collapsible trigger="Algorithm Guide" className="algo">
+                <Collapsible trigger="Breadth First Search ( BFS )">    
+                <div className="regular_text">                
+                    <p>
+                    <h1>Summary</h1>
+                    BFS is an algorithm that, starting at a root node, visits all of that root's neighbors. Neighbors are also nodes, and 'root' is just a name for the starting node. After visiting all the neighbors of
+                    the root, it visits all the neighbors of the root's neighbors. This pattern continues in a recursive fashion until eventually, the target node is a neighbor.                    
+                    </p>
+                    <p>                    
+                    This behavior, similar to dropping a rock in a pond and having the ripples expand outward, is captured programmatically through the use of a queue.
+                    </p>
+                    <p>
+                    <h1>How it Works</h1>
+                    A node (beginning with the root node) is enqueued into a queue. While the queue is not empty, the node that is next in line is dequeued from the queue, and then each of that nodes
+                    neighbors is enqueued into the queue. A check is performed to see if at any point a neighbor is the target node.
+                    </p>
+                </div>
+                    
+                </Collapsible>
+                <Collapsible trigger="Depth First Search ( DFS )">
+                <div className="regular_text">                
+                    <p>
+                    <h1>Summary</h1>
+                    DFS is an algorithm that, starting at a root node, picks a single neighbor. A neighbor is also a node, and 'root' is just a name for the starting node. After picking one neighbor of the root, it picks
+                    a single neighbor of the roots neighbor. The idea is to pick a single route, and to go as far down that route as possible. After reaching the end of that route, it starts at the beginning and then 
+                    picks another unvisited route.
+                    </p>
+                    <p>                    
+                    Similar to driving as far down a road as possible, reversing and then going as far as you can down another road until you visit all the roads in your neighborhood
+                    , this behavior is captured programmatically through the use of recursion programming.
+                    </p>
+                    <p>
+                    <h1>How it Works</h1>
+                    Iterate through all the neighbors of a node (beginning with the root node) in a DFS function that accepts a root as a parameter. For each neighbor, call DFS again with that 
+                    neighbor passed as the root. Continually check if the root is the target node.                     
+                    </p>
+                </div>
+                </Collapsible>
+                <Collapsible trigger="A* ( A star )">
+                <div className="regular_text">                
+                    <p>
+                        <h1>Summary</h1>
+                        A* is a pathfinding algorithm backed by simple artificial intelligence. It uses hueristics to make an educated guess at every node, and by doing this it dynamically finds the shortest path to a target node. It's quicker
+                        than Dijkstra's, but only on the condition that the location of the target node is known.
+                    </p>
+
+                    <h1>How it Works</h1>
+                    <p>
+                        <h3>Basics</h3>    
+                        Every node has 3 costs associated with it: a G cost (distance the node is from the starting node), an H cost (distance the node is from the target node) 
+                        and an F cost (sum of the G and H cost). Every neighbor of the node has it's F cost calcuated via a hueristic, and whichever node has the lowest F cost is visited next. The choosing
+                        of the lowest F cost is the educated guess that the algorithm is making.
+                    </p>
+                    <p>
+                        <h3>Hueristics: Calculating the H Cost</h3>
+                        <li>
+                        Manhattan distance (what this visualizer uses)
+                        </li>
+                        <ul>
+                            <li type="circle">
+                            HCost = Math.abs(target_node_row - current_node_row) + Math.abs(target_node_col - current_node_col)
+                            </li>
+                            <li type="circle">
+                                This hueristic is used when a node is allowed to move in four directions (up, down, left, right)
+                            </li>  
+                        </ul>
+                        <li>
+                        Diagonal distance
+                        </li>
+                        <ul>
+                            <li type="circle">
+                            H Cost = Max(Math.abs(current_node_row + target_node_row), Math.abs(current_node_col + current_node_col))
+                            </li>
+                            <li type="circle">
+                                This hueristic is used when a node is allowed to move in 8 directions (up, down, left, right, all corners)
+                            </li>                   
+                        </ul>                                            
+                        <h3>Hueristics: Calculating the G Cost</h3>
+                        <li>
+                        There are differnt ways to calculate the G Cost depending on the application. Since this visualizer uses a 2-d grid, this formula is used:
+                        <ul>
+                            <li type="circle">
+                            G Cost = (sqrt(Math.abs(current_node_col - start_node_col) + Math.abs(current_node_row - start_node_row)) * 10)
+                            </li>                                       
+                        </ul>
+                        </li>
+                    </p>  
+                </div>
+                </Collapsible>
+                <Collapsible trigger="Dijkstra">
+                    <div className="regular_text"> 
+                        <p>
+                            <h1>Summary</h1>
+                            Dijkstra's is a pathfinding algorithm that finds the shortest cost to a target node. Initially it does not know where the target node is, unlike A*.
+                        </p>
+
+                        <p>
+                            <h1>How it Works</h1>
+                            The tentative cost of each node is set to infinity, escept the initial node which is set to 0. At each node, 
+                            the cost of its neighbors is calculated by taking the distance of that node added to the edge cost inbetween the current node and the neighbor. 
+                            This is done for each neighbor.
+                        </p>
+                        <p>
+                            The costs of the neighbor nodes are either updated/ left alone depending on the lowest calculated distance. Once all nodes have been visited, the shortest 
+                            cost path can be followed.                        
+                        </p>
+                    </div> 
+                </Collapsible>
+                {/*  */}
+            </Collapsible>
+            <button onClick={() => this.visualizeBFS()} className="button">
                 Visualize Breadth First Search Algorithm
-            </button>
-            <button onClick={() => this.visualizeDFS()}>
+            </button>            
+            <button onClick={() => this.visualizeDFS()} className="button">
                 Visualize Depth First Search Algorithm
             </button>
-            <button onClick={() => this.visualizeAStar()}>
+            <button onClick={() => this.visualizeAStar()} className="button">
                 Visualize A*
             </button>            
-            <button onClick={() => this.visualizeDijkstra()}>
+            <button onClick={() => this.visualizeDijkstra()} className="button">
                 Visualize Dijkstra's
+            </button>
+            <button onClick={() => this.clear()} className="button">
+                Clear
+            </button>
+            <button onClick={() => this.stopAlgorithm()} className="button">
+                Restart
             </button>
             <div className="grid">
             {/* Map can have three parameters: value, index, array */}

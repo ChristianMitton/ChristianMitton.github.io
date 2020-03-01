@@ -3,13 +3,10 @@ $startColor: rgba(63, 195, 128, 1);
 $finishColor: rgba(255, 0, 0, 0.6);
 
 .node {
-    // width: 25px;
-    // height: 25px;
     width: 2vw;
     height: 3vh;
     outline: 1px solid rgb(175, 216, 248);
-    display: inline-block;    
-    // border-radius: 100%;
+    display: inline-block;        
     
 }
 
@@ -17,6 +14,7 @@ $finishColor: rgba(255, 0, 0, 0.6);
     background: $startColor;
     animation-name: startNodeAnimation;
     animation-duration: .5s;    
+    cursor: pointer;
 }
 
 .node-finish {
@@ -24,6 +22,7 @@ $finishColor: rgba(255, 0, 0, 0.6);
     animation-name: finishNodeAnimation;
     animation-duration: .5s;
     animation-fill-mode: forwards;
+    cursor: pointer;
 }
 
 .node-visited {

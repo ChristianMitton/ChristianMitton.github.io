@@ -11,6 +11,7 @@
           animation-name: startNodeAnimation;
   -webkit-animation-duration: .5s;
           animation-duration: .5s;
+  cursor: pointer;
 }
 
 .node-finish {
@@ -21,6 +22,7 @@
           animation-duration: .5s;
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
+  cursor: pointer;
 }
 
 .node-visited {
